@@ -1,11 +1,12 @@
 #include "lexer.h" 
 #include "../libft/libft.h"
 
-void add_identifier_token(const char **start, const char *end, t_token **tokens) {
-    if (*start < end) {
+void add_identifier_token(const char **start, const char *end, t_token **tokens) 
+{
+    if (*start < end) 
+    {
         char *val = strndup(*start, end - *start);
         add_token(tokens, create_token(T_IDENTIFIER, val));
-        // No need to free val here since create_token now takes ownership
     }
 }
 
@@ -46,7 +47,17 @@ void lexer(const char *input, t_token **tokens)
     lexer_recursive(input, input, tokens);
 }
 
-int main() {
+/*
+void print_tokens(t_token *tokens) 
+{
+    while (tokens) 
+    {
+        printf("Type: %d, Value: %s\n", tokens->type, tokens->value);
+        tokens = tokens->next;
+    }
+}
+int main() 
+{
     const char *input = "cat < input.txt > output.txt | grep 'something'";
     t_token *tokens = NULL;
     lexer(input, &tokens);
@@ -54,3 +65,4 @@ int main() {
     free_tokens(&tokens);
     return 0;
 }
+*/

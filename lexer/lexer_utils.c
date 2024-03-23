@@ -26,7 +26,6 @@ void handle_quotes(const char **input, t_token **tokens, char quoteType)
     }
 }
 
-
 void handle_operator(const char **input, t_token **tokens, char op) 
 {
     if (op == '<' || op == '>') 
@@ -61,15 +60,5 @@ void handle_env_var(const char **input, t_token **tokens)
     } else 
     {
         add_token(tokens, create_token(T_UNKNOWN, "$"));
-    }
-}
-
-
-void print_tokens(t_token *tokens) 
-{
-    while (tokens) 
-    {
-        printf("Type: %d, Value: %s\n", tokens->type, tokens->value);
-        tokens = tokens->next;
     }
 }
