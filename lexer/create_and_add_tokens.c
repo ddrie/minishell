@@ -1,6 +1,7 @@
 #include "lexer.h"
+#include "../libft/libft.h"
 
-t_token *create_token(t_token_type type, char *value) 
+t_token *create_token(t_token_type type, const char *value) 
 {
     t_token *new_token = malloc(sizeof(t_token));
     if (!new_token) 
