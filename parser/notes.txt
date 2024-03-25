@@ -1,0 +1,40 @@
+
+Command Structure (`t_command`)
+represents a single command to be executed, along with its arguments and any specified input or output redirections.
+
+`cmd` - Stores the name of the command (e.g., `"ls"`, `"grep"`).
+`args`- A dynamically allocated array of strings that holds all the arguments to the command,
+terminated by a `NULL` pointer to indicate the end of the arguments.
+`input_redirect` and `output_redirect` -  If the command includes redirections (`<`, `>`, `>>`), 
+these fields store the filenames involved. 
+`append` indicates whether the output should be appended (`>>`) rather than overwritten (`>`).
+`next` -  In case of pipelines (`|`)
+
+create_new_command
+dynamically allocates and initializes a `t_command` structure. 
+It sets up an empty arguments array with space for at least a `NULL` pointer
+indicating no arguments initially. This is essential for executing commands that may or may not have arguments.
+
+Basic Parsing Logic (`parse_tokens`)
+This function processes the stream of tokens (produced by the lexer) to fill out a `t_command` structure.
+
+- The first identifier token it encounters is assigned as the command (`cmd` field).
+- Subsequent identifier tokens are treated as arguments and are added to the `args` array using the `add_argument` function.
+- Currently, this basic version does not handle redirections or pipes but lays the groundwork for doing so.
+
+add_argument`
+expands the `args` array within a command to accommodate a new argument. 
+It ensures the array remains `NULL`-terminated, which is crucial for later executing the command with functions like `execvp`.
+
+the Parsing Flow
+When you run the parser on a token stream:
+
+1. **Initialization**: A new `t_command` is created, ready to be filled with information.
+2. **Token Iteration**: The parser walks through the tokens one by one.
+   - If it's the first identifier, it sets the command.
+   - If it encounters more identifiers, it adds them as arguments.
+3. **Building the Command**: By the end of the token stream, you have a command structure populated with the command and its arguments, ready for execution.
+
+ Extending the Parser
+- **Redirections**: Detect `T_LESS`, `T_GREAT`, and `T_GREATGREAT` tokens, setting `input_redirect` or `output_redirect` as appropriate.
+- **Pipelines**: Use the `next` pointer to link commands in a pipeline, allowing for command execution where the output of one command feeds into the input of the next.
