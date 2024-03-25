@@ -22,19 +22,19 @@ This function processes the stream of tokens (produced by the lexer) to fill out
 - Subsequent identifier tokens are treated as arguments and are added to the `args` array using the `add_argument` function.
 - Currently, this basic version does not handle redirections or pipes but lays the groundwork for doing so.
 
-add_argument`
+add_argument
 expands the `args` array within a command to accommodate a new argument. 
 It ensures the array remains `NULL`-terminated, which is crucial for later executing the command with functions like `execvp`.
 
 the Parsing Flow
 When you run the parser on a token stream:
 
-1. **Initialization**: A new `t_command` is created, ready to be filled with information.
-2. **Token Iteration**: The parser walks through the tokens one by one.
+1. A new `t_command` is created, ready to be filled with information.
+2. The parser walks through the tokens one by one.
    - If it's the first identifier, it sets the command.
    - If it encounters more identifiers, it adds them as arguments.
-3. **Building the Command**: By the end of the token stream, you have a command structure populated with the command and its arguments, ready for execution.
+3. Building the Command: By the end of the token stream, you have a command structure populated with the command and its arguments, ready for execution.
 
  Extending the Parser
-- **Redirections**: Detect `T_LESS`, `T_GREAT`, and `T_GREATGREAT` tokens, setting `input_redirect` or `output_redirect` as appropriate.
-- **Pipelines**: Use the `next` pointer to link commands in a pipeline, allowing for command execution where the output of one command feeds into the input of the next.
+- Redirections: Detect `T_LESS`, `T_GREAT`, and `T_GREATGREAT` tokens, setting `input_redirect` or `output_redirect` as appropriate.
+- Pipelines: Use the `next` pointer to link commands in a pipeline, allowing for command execution where the output of one command feeds into the input of the next.
