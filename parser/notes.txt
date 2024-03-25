@@ -38,3 +38,47 @@ When you run the parser on a token stream:
  Extending the Parser
 - Redirections: Detect `T_LESS`, `T_GREAT`, and `T_GREATGREAT` tokens, setting `input_redirect` or `output_redirect` as appropriate.
 - Pipelines: Use the `next` pointer to link commands in a pipeline, allowing for command execution where the output of one command feeds into the input of the next.
+
+
+
+Redirection info made by chatgpt:
+
+1. Redirection Types
+Ensure you've covered all types of redirections:
+- **Input Redirection (`<`)**: Redirects the contents of a file to the command's standard input.
+- **Output Redirection (`>`)**: Redirects the command's standard output to a file, overwriting it.
+- **Appending Output Redirection (`>>`)**: Redirects the command's standard output to a file, appending it if the file already exists.
+- **Here-document (`<<`)**: Reads input directly from the command line until a designated delimiter line is encountered.
+
+### 2. Parsing Redirection Tokens
+Verify that your parser correctly identifies redirection tokens and the filenames or delimiters that follow them. Common misses include:
+- Not moving to the next token after identifying a redirection token to grab the filename or delimiter.
+- Failing to handle cases where the filename or delimiter is missing or incorrect, which should result in an error.
+
+### 3. File Descriptors Management
+For input and output redirections, managing file descriptors is crucial. Check that you:
+- Correctly open files with the appropriate flags (`O_RDONLY` for input, `O_WRONLY | O_CREAT | O_TRUNC` for output, and `O_WRONLY | O_CREAT | O_APPEND` for appending).
+- Use `dup2()` to duplicate the file descriptor to standard input or output as required.
+- Close the original file descriptor after duplication.
+
+### 4. Error Handling
+Robust error handling ensures your shell behaves predictably and informatively in case of issues. Ensure you:
+- Check for errors in opening files and report them to the user.
+- Validate that a filename or delimiter follows a redirection token.
+- Handle cases where redirection syntax is correct, but the file cannot be opened or created (due to permissions, non-existent directories, etc.).
+
+### 5. Here-document (`<<`) Implementation
+The here-document requires reading input lines until the delimiter is encountered. This can be complex, so make sure you:
+- Correctly identify the delimiter and read input lines without executing them as commands.
+- Possibly store the input in a temporary file or buffer for use as the command's standard input.
+- Do not update the command history based on here-document content, per project requirements.
+
+### What Might Be Missing or Needs Attention:
+- **Integration Testing**: Once you've implemented redirections, test them in combination with actual commands to ensure they work as expected in real-world scenarios.
+- **Advanced Redirection Scenarios**: Consider testing complex cases, like redirecting both input and output for the same command, or chaining multiple redirections and pipes.
+- **Performance and Resource Management**: Ensure your implementation does not leave open file descriptors or temporary files.
+
+### Next Steps:
+- Review the implementation against the points mentioned to identify any gaps.
+- Conduct thorough testing with a variety of redirection scenarios.
+- Iterate based on test results, refining the implementation for reliability and usability.
