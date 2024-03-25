@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmavliut <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dianamavlutova <dianamavlutova@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 16:06:05 by dmavliut          #+#    #+#             */
-/*   Updated: 2024/03/23 16:06:06 by dmavliut         ###   ########.fr       */
+/*   Updated: 2024/03/25 10:41:11 by dianamavlut      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	handle_env_var(const char **input, t_token **tokens)
 	}
 	if (*input > start)
 	{
-		val = strndup(start, *input - start + 1);
+		val = ft_strndup(start, *input - start + 1);
 		add_token(tokens, create_token(T_DOLLAR, val));
 	}
 	else

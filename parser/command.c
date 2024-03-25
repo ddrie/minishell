@@ -27,7 +27,7 @@ void add_argument(t_command *cmd, char *arg)
     while (cmd->args[i] != NULL) i++; 
 
     // Reallocate args array to accommodate one more argument + NULL terminator
-    char **new_args = realloc(cmd->args, sizeof(char*) * (i + 2));
+    char **new_args = realloc(cmd->args, sizeof(char*) * (i + 2)); //i will implement realloc later
     if (!new_args) return; // Handle allocation failure
 
     cmd->args = new_args;
