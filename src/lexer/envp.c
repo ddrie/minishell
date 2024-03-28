@@ -6,7 +6,7 @@
 /*   By: cgray <cgray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:23:08 by cgray             #+#    #+#             */
-/*   Updated: 2024/03/26 16:10:48 by cgray            ###   ########.fr       */
+/*   Updated: 2024/03/28 17:26:30 by cgray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,29 @@ char	*path_formatter(char *path, char *cmd)
 	return (path_formatted);
 }
 
-/* iterates through list and returns string value corresponding to the key */
-char	*find_key(t_envp *envp_list, char *key)
+/* iterates through list and returns string value corresponding to the key
+*i is modified to use index later in expand_variables*/
+char	*find_key(t_envp *envp_list, char *key, int *i)
 {
 	t_envp	*current;
 	char	*str;
+	char	*temp_key;
 
 	current = envp_list;
 	while (current)
 	{
-		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
+		//THIS COULD BREAK IF *KEY CONTAINS MORE THAN JUST THE KEY, NEED TO CHECK BASH BEHAVIOR
+		temp_key = ft_strndup(key, ft_strlen(current->key)); //if key starts with current->key
+		if (ft_strncmp(current->key, temp_key, ft_strlen(key)) == 0)
 		{
+			*i = ft_strlen(key);
 			str = ft_strdup(current->value);
 			return (str);
 		}
+		free(temp_key);
 		current = current->next;
 	}
+	free(temp_key);
 	free(current);
 	return (NULL);
 }
@@ -63,7 +70,7 @@ char	*path_finder(t_envp *envp_list, char *cmd)
 	char	*path;
 	int		i;
 
-	paths_tab = ft_split(find_key(envp_list, "PATH"), ':');
+	paths_tab = ft_split(find_key(envp_list, "PATH", NULL), ':');
 	i = 0;
 	while (paths_tab[i])
 	{
