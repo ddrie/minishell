@@ -10,9 +10,10 @@ INC_LIBFT	:= -I ./libft
 
 SRC_PATH	:= src/
 
-SRC			:= minishell.c envp.c \
-			lexer/create_and_add_tokens.c lexer/lexer_utils.c lexer/lexer.c lexer/tokenizer.c\
-			parser/parser_draft.c parser/command.c parser/expand.c #parser/parser.c
+#			lexer/create_and_add_tokens.c lexer/lexer_utils.c lexer/lexer.c lexer/tokenizer.c
+SRC			:= minishell.c \
+			lexer/lexer.c lexer/envp.c
+#			parser/parser_draft.c parser/command.c parser/expand.c #parser/parser.c
 SRCS		:= $(addprefix $(SRC_PATH), $(SRC))
 
 OBJ_PATH:= obj/
